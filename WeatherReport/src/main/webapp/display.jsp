@@ -51,7 +51,6 @@
 	  	   <option value="40">40</option>
 	  </select>
   </div>
-  
   <input id="submit" type="button" value="Submit"></input><br>
   <label id="error"></label><br>
   <div id="citiesdiv"></div>
@@ -73,6 +72,7 @@
           $("#submit").click(function() {
         	  var selcity = $("#city").val();
         	  var langcode = $("#langcode").val();
+        	  $("#error").html("");
         	  populateWhetherData(selcity, langcode, tempRule);
         	  
            });
@@ -102,7 +102,7 @@
        Loads cities from the rest api and populates
      */
       function loadCities() {
-    	  $.getJSON("http://localhost:8084/WeatherReport/loadCities", function(data) {
+    	  $.getJSON("/WeatherReport/loadCities", function(data) {
         	  var cities = [];
         	   $.each(data, function(key, value){
             		 cities.push("<button id='" +key +"' class='cityclass'> " + key +"</button>")
@@ -119,7 +119,7 @@
        Loads languages and language codes from rest api
       */
       function loadLangauages() {
-    	  $.getJSON("http://localhost:8084/WeatherReport/loadLanguages", function(data) {
+    	  $.getJSON("/WeatherReport/loadLanguages", function(data) {
         	  var languages = [];
         	   $.each(data, function(key, value){
         		   $("#langcode").append($("<option value='"+value+"'/>").text(key));
@@ -143,7 +143,7 @@
           $.getJSON(url, function(data) {
         	  applyWhetherDataFilter(data, tempRule);
             }).fail(function(x, y, error) {
-            	 $("#lbl").html("No records have been returned for the city : " + selcity)
+            	 $("#error").html("No records have been returned for the city : " + selcity)
             	 console.log("error" + error);
             }).done(function() {
             	     console.log("Done");
