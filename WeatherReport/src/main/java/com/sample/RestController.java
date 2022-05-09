@@ -15,15 +15,14 @@ import org.json.simple.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller
+@RestController
 public class RestController {
 
-	private String csvFilePath = "C:/Users/elangop/Desktop/personal/cities.csv";
+	private String final csvFilePath = "C:/Users/elangop/Desktop/personal/cities.csv";
 
 	@RequestMapping(value = "loadCities", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String loadCities() {
+	public String loadCities() {
 
 		Map<String, String> map = new HashMap<>();
 		File file = new File(csvFilePath);
@@ -34,19 +33,16 @@ public class RestController {
 				map.put(values[0], values[1]);
 				line = reader.readLine();
 			}
-		} catch (FileNotFoundException fe) {
-			fe.printStackTrace();	
-		} catch (IOException e) {
-			e.printStackTrace();	
-		}
+		} catch (Exception fe) {
+		     fe.printStackTrace();	
+		} 
 
 		JSONObject obj = new JSONObject(map);
-		System.out.println(obj.toJSONString());
 		return obj.toJSONString();
 	}
 
 	@RequestMapping(value ="loadLanguages", produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String loadLanguages() {
+	public String loadLanguages() {
 		JSONObject obj = new JSONObject();
 		obj.put("Arabic", "ar");
 		obj.put("Bulgarian", "bg");
@@ -81,8 +77,6 @@ public class RestController {
 		obj.put("Vietnamese", "vi");
 		obj.put("Chinese Simplified", "zh_cn");
 		obj.put("Chinese Traditional", "zh_tw");
-		
-		System.out.println(obj.toJSONString());
 		return obj.toJSONString();
 	}
 
